@@ -1,0 +1,50 @@
+---
+- name: Обновление файлов в /etc/skel и для специальных пользователей
+  hosts: all
+  become: yes
+  vars:
+    dotfiles:
+      - .bashrc
+      - .nanorc
+      - .vimrc
+    special_users:
+      - name: root
+        home: /root
+      - name: localadmin
+        home: /home/localadmin
+  tasks:
+
+    - name: Копируем файлы в /etc/skel
+      copy:
+        src: "{{ item }}"
+        dest: "/etc/skel/{{ item }}"
+        owner: root
+        group: root
+        mode: '0644'
+      loop: "{{ dotfiles }}"
+      tags: skel
+
+    - name: Проверяем, существует ли домашняя директория пользователя
+      stat:                                                           # Проверяет наличие файла или директории по указанному пути
+        path: "{{ item.home }}"
+      register: homedir_stats
+      loop: "{{ special_users }}"
+      loop_control:
+        label: "{{ item.name }}"
+      tags: users
+                
+    - name: Копируем файлы для root и localadmin, если директория существует
+      copy:
+        src: "{{ item.1 }}"
+        dest: "{{ item.0.home }}/{{ item.1 }}"
+        owner: "{{ item.0.name }}"
+        group: "{{ item.0.name }}"
+        mode: '0644'
+      loop: "{{ special_users | product(dotfiles) }}"
+      when: >
+            homedir_stats.results 
+            | selectattr('item.name', 'equalto', item.0.name) 
+            | map(attribute='stat.exists') 
+            | first
+      tags: users
+

@@ -1,0 +1,66 @@
+---
+- name: install_packages
+  hosts: all
+  become: yes
+  gather_facts: no
+  tasks:
+
+    - name: install nano
+      ansible.builtin.apt:
+        name: nano
+        state: latest
+
+    - name: install vim
+      ansible.builtin.apt:
+        name: vim
+        state: latest
+
+    - name: install zip
+      ansible.builtin.apt:
+        name: zip
+        state: latest
+
+    - name: install unzip
+      ansible.builtin.apt:
+        name: unzip
+        state: latest
+
+    - name: install xclip
+      ansible.builtin.apt:
+        name: xclip
+        state: latest
+
+    - name: install tree
+      ansible.builtin.apt:
+        name: tree
+        state: latest
+
+    - name: install nmap
+      ansible.builtin.apt:
+        name: nmap
+        state: latest
+
+    - name: install htop
+      ansible.builtin.apt:
+        name: htop
+        state: latest
+
+    - name: install net-tools
+      ansible.builtin.apt:
+        name: net-tools
+        state: latest
+
+    - name: install wget
+      ansible.builtin.apt:
+        name: wget
+        state: latest
+
+    - name: install curl
+      ansible.builtin.apt:
+        name: curl
+        state: latest
+
+    - name: install rsync
+      ansible.builtin.apt:
+        name: rsync
+        state: latest

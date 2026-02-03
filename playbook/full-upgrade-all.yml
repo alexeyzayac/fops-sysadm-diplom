@@ -1,0 +1,34 @@
+---
+- name: full-system-maintenance
+  hosts: all                     # Запустить на всех хостах из inventory.
+  become: yes                    # Запустить от имени root
+  gather_facts: no               # не собирать факты перед выполнением (ускоряет выполнение)
+  tasks:
+
+    - name: update apt cache     # обновление кэша пакетов
+      ansible.builtin.apt:       # встроенный модуль apt
+        update_cache: yes        # аналог 'apt update'
+
+    - name: full upgrade         # полное обновление пакетов
+      ansible.builtin.apt:
+        upgrade: full            # аналог 'apt full-upgrade'
+
+    - name: full upgrade x2      # полное обновление пакетов (повтор)
+      ansible.builtin.apt:
+        upgrade: full
+
+    - name: install packages
+      ansible.builtin.apt:
+        name:
+          - apparmor
+          - libapparmor1
+        state: latest # Последние версии ПО
+
+    - name: autoremove unused packages   # автоматическое удаление ненужных пакетов
+      ansible.builtin.apt:
+        autoremove: yes
+
+    - name: Purge config leftovers (~c)  # очистка конфигурационных файлов удалённых пакетов
+      # модуль запускающий любые команды в командной строке на удалённом хосте
+      ansible.builtin.command: >
+        apt purge '~c' -y 

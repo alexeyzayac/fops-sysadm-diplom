@@ -1,0 +1,13 @@
+- name: Reboot servers
+  hosts: all
+  become: yes
+  gather_facts: no
+  tasks:
+
+    - name: Reboot the server
+      ansible.builtin.reboot:
+        reboot_timeout: 600
+
+    - name: Show IP after reboot
+      debug:
+        msg: "Host {{ inventory_hostname }} is back online with IP {{ ansible_default_ipv4.address }}"
