@@ -22,7 +22,7 @@
         name:
           - apparmor
           - libapparmor1
-        state: latest # Последние версии ПО
+        state: latest 
 
     - name: autoremove unused packages   # автоматическое удаление ненужных пакетов
       ansible.builtin.apt:

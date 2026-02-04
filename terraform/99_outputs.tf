@@ -1,9 +1,9 @@
 output "nginx_vm_a_public_ip" {
-  value = yandex_compute_instance.web_a.network_interface[0].nat_ip_address
+  value = yandex_compute_instance.web_a_nginx.network_interface[0].nat_ip_address
 }
 
 output "nginx_vm_b_public_ip" {
-  value = yandex_compute_instance.web_b.network_interface[0].nat_ip_address
+  value = yandex_compute_instance.web_b_nginx.network_interface[0].nat_ip_address
 }
 
 output "alb_public_ip" {

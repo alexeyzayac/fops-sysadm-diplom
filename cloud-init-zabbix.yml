@@ -12,3 +12,14 @@ users:                                                        # Список п�
   ssh_authorized_keys:                                        # Список публичных SSH-ключей, разрешённых для входа
   - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ2aIaWw6MfU2/VvqiSWCulDyMc+eQGlE0/I3TXcbdGC ufo@NEXA-HOST
   - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIArGCmMkSsC4lrpHDNscdEzP+tReXPKyAWdQe45PXX+/ user-host@HOST-TSOH
+
+packages:                                                     # 
+  - nginx
+  - curl
+  - postgresql
+
+runcmd:                                                       # 
+  - apt update
+  - apt -y full-upgrade
+  - systemctl enable nginx
+  - systemctl start nginx
