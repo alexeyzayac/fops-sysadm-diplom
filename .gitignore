@@ -1,22 +1,17 @@
-# Local .terraform directories
+### Local:
+.hosts.ini
+
+### Terraform:
 **/.terraform/
 **/.terraformrc
-
-# Terraform state files
 *.tfstate
 *.tfstate.*
 .terraform.tfstate*
 .terraform.lock.hcl
-
-# Terraform plan files
 *.tfplan
 *.tfplan.json
-
-# Crash logs
 crash.log
 crash.*.log
-
-# Sensitive files (tfvars with secrets)
 *_override.tf
 *_override.tf.json
 *.tfvars
@@ -25,18 +20,12 @@ crash.*.log
 !override.tf
 !override.tf.json
 !*.auto.tfvars
-
-# Ignore CLI configuration
 .terraformrc
 terraform.rc
-
-# IDE/editor directories
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# OS generated files
 .DS_Store
 .DS_Store?
 ._*

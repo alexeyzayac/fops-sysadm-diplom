@@ -5,8 +5,8 @@ data "yandex_compute_image" "ubuntu_2404_lts" {
 
 # ВМ в зоне A
 resource "yandex_compute_instance" "web_a" {
-  name        = "computer-vm-1"
-  hostname    = "computer-vm-1"
+  name        = "nginx-vm-1a"
+  hostname    = "nginx-vm-1a"
   platform_id = "standard-v3"
   zone        = "ru-central1-a"
 
@@ -45,8 +45,8 @@ resource "yandex_compute_instance" "web_a" {
 
 # ВМ в зоне B
 resource "yandex_compute_instance" "web_b" {
-  name        = "computer-vm-2"
-  hostname    = "computer-vm-2"
+  name        = "nginx-vm-2b"
+  hostname    = "nginx-vm-2b"
   platform_id = "standard-v3"
   zone        = "ru-central1-b"
 
