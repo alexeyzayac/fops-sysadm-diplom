@@ -20,7 +20,7 @@ resource "yandex_compute_instance" "web_a_nginx" {
   }
 
   metadata = {
-    user-data          = file("../cloud-init-nginx.yml")
+    user-data          = file("../cloud-init/cloud-init-nginx.yml")
     serial-port-enable = 1
   }
 
@@ -60,7 +60,7 @@ resource "yandex_compute_instance" "web_b_nginx" {
   }
 
   metadata = {
-    user-data          = file("../cloud-init-nginx.yml")
+    user-data          = file("../cloud-init/cloud-init-nginx.yml")
     serial-port-enable = 1
   }
 

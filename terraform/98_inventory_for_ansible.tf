@@ -17,5 +17,5 @@ resource "local_file" "inventory" {
 
   XYZ
 
-  filename = "../.hosts.ini"
+  filename = "../ansible/.hosts.ini"
 }

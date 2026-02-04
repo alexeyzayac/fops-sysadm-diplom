@@ -19,7 +19,7 @@ resource "yandex_compute_instance" "web_a_zabbix" {
   }
 
   metadata = {
-    user-data          = file("../cloud-init-zabbix.yml")
+    user-data          = file("../cloud-init/cloud-init-zabbix.yml")
     serial-port-enable = 1
   }
 
