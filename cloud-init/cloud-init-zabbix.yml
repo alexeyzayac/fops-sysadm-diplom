@@ -41,8 +41,9 @@ runcmd:
   - sed -i "s/^# DBPassword=/DBPassword=password/" /etc/zabbix/zabbix_server.conf
 
   # Настройка Nginx для фронтенда Zabbix
-  - sed -i "s/# listen 8080;/listen 8080;/" /etc/zabbix/nginx.conf
-  - sed -i "s/# server_name example.com;/server_name your.server.name;/" /etc/zabbix/nginx.conf
+  - rm -f /etc/nginx/sites-enabled/default
+  - sed -i "s/#\\s*listen.*/listen 80;/" /etc/zabbix/nginx.conf
+  - sed -i "s/#\\s*server_name.*/server_name _;/" /etc/zabbix/nginx.conf
 
   # Запуск и включение сервисов
   - systemctl enable --now zabbix-server zabbix-agent nginx php8.3-fpm
