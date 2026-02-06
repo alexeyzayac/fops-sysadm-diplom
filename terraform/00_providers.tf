@@ -14,7 +14,7 @@ terraform {
 
 # Настройка провайдера Yandex Cloud
 provider "yandex" {
-  cloud_id  = var.cloud_id
-  folder_id = var.folder_id
+  cloud_id                 = var.cloud_id
+  folder_id                = var.folder_id
   service_account_key_file = file("~/.yandex/authorized_key.json")
-} 
+}

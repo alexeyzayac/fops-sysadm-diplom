@@ -14,20 +14,11 @@ users: # Список пользователей, которых нужно со
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIArGCmMkSsC4lrpHDNscdEzP+tReXPKyAWdQe45PXX+/ user-host@HOST-TSOH
 
 packages:
-  - nginx
+  - apt-transport-https
+  - openjdk-11-jdk
   - curl
 
 runcmd:
   # Обновление системы
   - apt update
   - apt -y full-upgrade
-
-  # Установка Zabbix-agent
-  - wget https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu24.04_all.deb
-  - dpkg -i zabbix-release_latest_7.4+ubuntu24.04_all.deb
-  - apt update
-  - apt install zabbix-agent
-
-  # Запуск и включение сервисов
-  - systemctl enable --now nginx zabbix-agent
-  - systemctl restart nginx zabbix-agent

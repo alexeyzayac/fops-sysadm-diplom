@@ -1,25 +1,25 @@
-#cloud-config                                                 
-datasource:                                                   # Настройки источника метаданных (metadata service)
- Ec2:                                                         # Используем драйвер, совместимый с Amazon EC2
-  strict_id: false                                            # Отключаем строгую проверку instance-id (нужно для облаков-эмуляторов EC2)
+#cloud-config
+datasource: # Настройки источника метаданных (metadata service)
+  Ec2: # Используем драйвер, совместимый с Amazon EC2
+    strict_id: false # Отключаем строгую проверку instance-id (нужно для облаков-эмуляторов EC2)
 
-ssh_pwauth: no                                                # Запрещаем вход по SSH с паролем (только через ключи)
+ssh_pwauth: no # Запрещаем вход по SSH с паролем (только через ключи)
 
-users:                                                        # Список пользователей, которых нужно создать
-- name: localadmin                                            # Имя пользователя
-  sudo: ALL=(ALL) NOPASSWD:ALL                                # Даём право sudo без пароля (root-доступ без подтверждения)
-  shell: /bin/bash                                            # Указываем оболочку по умолчанию — bash
-  ssh_authorized_keys:                                        # Список публичных SSH-ключей, разрешённых для входа
-  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ2aIaWw6MfU2/VvqiSWCulDyMc+eQGlE0/I3TXcbdGC ufo@NEXA-HOST
-  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIArGCmMkSsC4lrpHDNscdEzP+tReXPKyAWdQe45PXX+/ user-host@HOST-TSOH
+users: # Список пользователей, которых нужно создать
+  - name: localadmin # Имя пользователя
+    sudo: ALL=(ALL) NOPASSWD:ALL # Даём право sudo без пароля (root-доступ без подтверждения)
+    shell: /bin/bash # Указываем оболочку по умолчанию — bash
+    ssh_authorized_keys: # Список публичных SSH-ключей, разрешённых для входа
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ2aIaWw6MfU2/VvqiSWCulDyMc+eQGlE0/I3TXcbdGC ufo@NEXA-HOST
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIArGCmMkSsC4lrpHDNscdEzP+tReXPKyAWdQe45PXX+/ user-host@HOST-TSOH
 
-packages:                                                     # 
+packages:
   - nginx
   - curl
   - postgresql
 
-runcmd:  
-  # Обновление системы                                                     # 
+runcmd:
+  # Обновление системы                                                      #
   - apt update
   - apt -y full-upgrade
 
@@ -28,7 +28,7 @@ runcmd:
   - dpkg -i zabbix-release_latest_7.4+ubuntu24.04_all.deb
   - apt update
   - apt install -y zabbix-server-pgsql zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf zabbix-sql-scripts zabbix-agent
-  
+
   # Гарантируем, что PostgreSQL запущен
   - systemctl enable --now postgresql
 
