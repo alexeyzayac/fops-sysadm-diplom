@@ -1,5 +1,7 @@
 ### Local:
 .hosts.ini
+deb
+/deb/***
 
 ### Terraform:
 **/.terraform/

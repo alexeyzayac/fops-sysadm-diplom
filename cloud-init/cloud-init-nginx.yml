@@ -33,4 +33,4 @@ runcmd:
   - systemctl enable --now nginx zabbix-agent docker
   - systemctl restart nginx zabbix-agent docker
 
-  - docker pull filebeat:8.19.11
+  - docker pull docker.elastic.co/beats/filebeat:8.19.11
