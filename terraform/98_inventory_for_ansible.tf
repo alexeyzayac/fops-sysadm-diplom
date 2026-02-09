@@ -11,10 +11,13 @@ resource "local_file" "inventory" {
   [elasticsearch]
   ${yandex_compute_instance.web_elasticsearch.name} ansible_host=${yandex_compute_instance.web_elasticsearch.network_interface[0].nat_ip_address}
 
+  [kibana]
+  ${yandex_compute_instance.web_kibana.name} ansible_host=${yandex_compute_instance.web_kibana.network_interface[0].nat_ip_address}
+
   [all:vars]
-    ansible_user=localadmin
-    ansible_ssh_private_key_file=~/.ssh/yandex.cloud/cloud-alexeyzayac
-    ansible_python_interpreter=/usr/bin/python3
+  ansible_user=localadmin
+  ansible_ssh_private_key_file=~/.ssh/yandex.cloud/cloud-alexeyzayac
+  ansible_python_interpreter=/usr/bin/python3
 
 
   XYZ

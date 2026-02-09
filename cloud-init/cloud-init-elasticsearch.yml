@@ -21,3 +21,8 @@ runcmd:
   # Обновление системы
   - apt update
   - apt -y full-upgrade
+
+  - systemctl enable --now docker
+  - systemctl restart docker
+
+  - docker pull elasticsearch:8.19.10

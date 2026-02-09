@@ -14,7 +14,6 @@ users: # Список пользователей, которых нужно со
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIArGCmMkSsC4lrpHDNscdEzP+tReXPKyAWdQe45PXX+/ user-host@HOST-TSOH
 
 packages:
-  - nginx
   - curl
   - docker.io
 
@@ -23,14 +22,7 @@ runcmd:
   - apt update
   - apt -y full-upgrade
 
-  # Установка Zabbix-agent
-  - wget https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu24.04_all.deb
-  - dpkg -i zabbix-release_latest_7.4+ubuntu24.04_all.deb
-  - apt update
-  - apt install zabbix-agent
+  - systemctl enable --now docker
+  - systemctl restart docker
 
-  # Запуск и включение сервисов
-  - systemctl enable --now nginx zabbix-agent docker
-  - systemctl restart nginx zabbix-agent docker
-
-  - docker pull filebeat:8.19.11
+  - docker pull kibana:8.19.10

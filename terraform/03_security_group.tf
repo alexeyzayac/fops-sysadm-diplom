@@ -59,4 +59,11 @@ resource "yandex_vpc_security_group" "web_sg" {
     port           = 9300
     v4_cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ingress {
+    description    = "Allow Kibana web interface"
+    protocol       = "TCP"
+    port           = 5601
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
 }
