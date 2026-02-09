@@ -30,6 +30,8 @@ runcmd:
   - mkdir -p /elasticsearch/data
   - mkdir -p /elasticsearch/logs
   - chown -R 1000:1000 /elasticsearch/data /elasticsearch/logs
+  - chmod -R 770 /elasticsearch/data /elasticsearch/logs
+
 
 # Запуск контейнера Elasticsearch (массив)
   - [ docker, run, -d,
