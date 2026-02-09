@@ -1,7 +1,7 @@
 ### ВМ в зоне A
 resource "yandex_compute_instance" "web_a_nginx" {
-  name        = "nginx-1"
-  hostname    = "nginx-1"
+  name        = "nginx-1-server"
+  hostname    = "nginx-1-server"
   platform_id = "standard-v3"
   zone        = "ru-central1-a"
 
@@ -24,8 +24,8 @@ resource "yandex_compute_instance" "web_a_nginx" {
     serial-port-enable = 1
   }
 
-  scheduling_policy { 
-    preemptible = true 
+  scheduling_policy {
+    preemptible = true
   }
 
   network_interface {
@@ -40,8 +40,8 @@ resource "yandex_compute_instance" "web_a_nginx" {
 
 ### ВМ в зоне B
 resource "yandex_compute_instance" "web_b_nginx" {
-  name        = "nginx-2"
-  hostname    = "nginx-2"
+  name        = "nginx-2-server"
+  hostname    = "nginx-2-server"
   platform_id = "standard-v3"
   zone        = "ru-central1-b"
 
@@ -64,8 +64,8 @@ resource "yandex_compute_instance" "web_b_nginx" {
     serial-port-enable = 1
   }
 
-  scheduling_policy { 
-    preemptible = true 
+  scheduling_policy {
+    preemptible = true
   }
 
   network_interface {

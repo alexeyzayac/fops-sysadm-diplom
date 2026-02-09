@@ -26,23 +26,37 @@ resource "yandex_vpc_security_group" "web_sg" {
   network_id = yandex_vpc_network.develop.id
 
   ingress {
-    description    = "Allow SSH"
+    description    = "Allow SSH access to web servers"
     protocol       = "TCP"
     port           = 22
     v4_cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    description    = "Allow HTTPS"
+    description    = "Allow HTTPS (secure web)"
     protocol       = "TCP"
     port           = 443
     v4_cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    description    = "Allow HTTP"
+    description    = "Allow HTTP (unencrypted web)"
     protocol       = "TCP"
     port           = 80
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description    = "Allow Elasticsearch HTTP API"
+    protocol       = "TCP"
+    port           = 9200
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description    = "Allow Elasticsearch cluster transport"
+    protocol       = "TCP"
+    port           = 9300
     v4_cidr_blocks = ["0.0.0.0/0"]
   }
 }

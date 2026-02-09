@@ -14,9 +14,8 @@ users: # Список пользователей, которых нужно со
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIArGCmMkSsC4lrpHDNscdEzP+tReXPKyAWdQe45PXX+/ user-host@HOST-TSOH
 
 packages:
-  - apt-transport-https
-  - openjdk-11-jdk
   - curl
+  - docker.io
 
 runcmd:
   # Обновление системы

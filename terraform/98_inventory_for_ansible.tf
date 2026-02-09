@@ -6,8 +6,10 @@ resource "local_file" "inventory" {
   ${yandex_compute_instance.web_b_nginx.name} ansible_host=${yandex_compute_instance.web_b_nginx.network_interface[0].nat_ip_address}
   
   [zabbix]
-  ${yandex_compute_instance.web_a_zabbix.name} ansible_host=${yandex_compute_instance.web_a_zabbix.network_interface[0].nat_ip_address}
+  ${yandex_compute_instance.web_zabbix.name} ansible_host=${yandex_compute_instance.web_zabbix.network_interface[0].nat_ip_address}
 
+  [elasticsearch]
+  ${yandex_compute_instance.web_elasticsearch.name} ansible_host=${yandex_compute_instance.web_elasticsearch.network_interface[0].nat_ip_address}
 
   [all:vars]
     ansible_user=localadmin

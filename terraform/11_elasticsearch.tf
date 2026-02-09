@@ -1,8 +1,8 @@
-resource "yandex_compute_instance" "elasticsearch" {
-  name        = "elasticsearch"
-  hostname    = "elasticsearch"
+resource "yandex_compute_instance" "web_elasticsearch" {
+  name        = "elasticsearch-server"
+  hostname    = "elasticsearch-server"
   platform_id = "standard-v3"
-  zone        = "ru-central1-b"
+  zone        = "ru-central1-d"
 
   resources {
     cores         = 2
@@ -28,7 +28,7 @@ resource "yandex_compute_instance" "elasticsearch" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.develop_b.id
+    subnet_id = yandex_vpc_subnet.develop_d.id
     nat       = true
     security_group_ids = [
       yandex_vpc_security_group.LAN.id,

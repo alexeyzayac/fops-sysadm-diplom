@@ -1,8 +1,8 @@
-resource "yandex_compute_instance" "web_a_zabbix" {
+resource "yandex_compute_instance" "web_zabbix" {
   name        = "zabbix-server"
   hostname    = "zabbix-server"
   platform_id = "standard-v3"
-  zone        = "ru-central1-a"
+  zone        = "ru-central1-d"
 
   resources {
     cores         = 2
@@ -23,12 +23,12 @@ resource "yandex_compute_instance" "web_a_zabbix" {
     serial-port-enable = 1
   }
 
-  scheduling_policy { 
-    preemptible = true 
+  scheduling_policy {
+    preemptible = true
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.develop_a.id
+    subnet_id = yandex_vpc_subnet.develop_d.id
     nat       = true
     security_group_ids = [
       yandex_vpc_security_group.LAN.id,
