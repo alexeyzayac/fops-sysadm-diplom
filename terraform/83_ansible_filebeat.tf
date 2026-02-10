@@ -29,34 +29,18 @@ resource "local_file" "filebeat_for_nginx_playbook" {
                 enabled: true
                 paths:
                   - /var/log/nginx/access.log
+                    fields:
+                      index_name: "nginx-access"
+              - type: log
+                enabled: true
+                paths:
                   - /var/log/nginx/error.log
-                fields:
-                  service: nginx
-                fields_under_root: true
-
-            processors:
-              - add_host_metadata: {}
-              - add_cloud_metadata: {}
-              - add_docker_metadata: {}
+                    fields:
+                      index_name: "nginx-error"
 
             output.elasticsearch:
               hosts: ["{{ elasticsearch_host }}"]
-              index: "nginx-%%{+yyyy.MM.dd}"
-
-            setup.kibana:
-              host: ["{{ kibana_host }}"]
-
-            setup.ilm.enabled: false
-            setup.template.enabled: true
-            setup.template.name: "nginx"
-            setup.template.pattern: "nginx-*"
-            setup.template.overwrite: true
-            setup.template.settings:
-              index:
-                number_of_shards: 1
-                number_of_replicas: 0
-
-            logging.level: info
+              index: "filebeat-nginx-%%{[fields.index_name]}-%%{+yyyy.MM.dd}"
 
       - name: Pull Filebeat image
         docker_image:
@@ -75,6 +59,7 @@ resource "local_file" "filebeat_for_nginx_playbook" {
           image: "{{ filebeat_image }}"
           user: root
           restart_policy: unless-stopped
+          network_mode: host
           command: >
             filebeat -e --strict.perms=false
           volumes:

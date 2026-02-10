@@ -7,13 +7,12 @@ resource "local_file" "elasticsearch_docker_playbook" {
     gather_facts: yes
 
     vars:
-      elasticsearch_dir: /elasticsearch
       elasticsearch_image: docker.elastic.co/elasticsearch/elasticsearch:8.19.11
 
     tasks:
       - name: Create Elasticsearch data directory
         file:
-          path: "{{ elasticsearch_dir }}/data"
+          path: "/elasticsearch/data"
           state: directory
           owner: 1000
           group: 1000
@@ -21,7 +20,7 @@ resource "local_file" "elasticsearch_docker_playbook" {
 
       - name: Create Elasticsearch logs directory
         file:
-          path: "{{ elasticsearch_dir }}/logs"
+          path: "/elasticsearch/logs"
           state: directory
           owner: 1000
           group: 1000
@@ -51,8 +50,8 @@ resource "local_file" "elasticsearch_docker_playbook" {
             network.host: 0.0.0.0
             xpack.security.enabled: "false"
           volumes:
-            - "{{ elasticsearch_dir }}/data:/usr/share/elasticsearch/data"
-            - "{{ elasticsearch_dir }}/logs:/usr/share/elasticsearch/logs"
+            - "/elasticsearch/data:/usr/share/elasticsearch/data"
+            - "/elasticsearch/logs:/usr/share/elasticsearch/logs"
           state: started
   YAML
 
