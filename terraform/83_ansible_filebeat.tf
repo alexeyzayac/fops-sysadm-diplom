@@ -46,9 +46,15 @@ resource "local_file" "filebeat_for_nginx_playbook" {
             setup.kibana:
               host: ["{{ kibana_host }}"]
 
+            setup.ilm.enabled: false
             setup.template.enabled: true
             setup.template.name: "nginx"
             setup.template.pattern: "nginx-*"
+            setup.template.overwrite: true
+            setup.template.settings:
+              index:
+                number_of_shards: 1
+                number_of_replicas: 0
 
             logging.level: info
 

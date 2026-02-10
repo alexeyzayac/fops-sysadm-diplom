@@ -9,8 +9,6 @@ resource "local_file" "elasticsearch_docker_playbook" {
     vars:
       elasticsearch_dir: /elasticsearch
       elasticsearch_image: docker.elastic.co/elasticsearch/elasticsearch:8.19.11
-      elasticsearch_container_name: elasticsearch-server
-      elasticsearch_cluster_name: alexey-zayac
 
     tasks:
       - name: Create Elasticsearch data directory
@@ -36,20 +34,20 @@ resource "local_file" "elasticsearch_docker_playbook" {
 
       - name: Stop old Elasticsearch container if exists
         docker_container:
-          name: "{{ elasticsearch_container_name }}"
+          name: elasticsearch-server
           state: absent
           force_kill: yes
 
       - name: Run Elasticsearch container
         docker_container:
-          name: "{{ elasticsearch_container_name }}"
+          name: elasticsearch-server
           image: "{{ elasticsearch_image }}"
           restart_policy: unless-stopped
           published_ports:
             - "9200:9200"
           env:
             discovery.type: single-node
-            cluster.name: "{{ elasticsearch_cluster_name }}"
+            cluster.name: alexey-zayac
             network.host: 0.0.0.0
             xpack.security.enabled: "false"
           volumes:

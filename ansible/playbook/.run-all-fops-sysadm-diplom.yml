@@ -1,4 +1,4 @@
 ---
 - import_playbook: elasticsearch_docker.yml
-- import_playbook: filebeat_for_nginx_docker.yml
 - import_playbook: kibana_docker.yml
+- import_playbook: filebeat_for_nginx_docker.yml

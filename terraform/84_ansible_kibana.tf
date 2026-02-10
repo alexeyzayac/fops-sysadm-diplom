@@ -8,7 +8,6 @@ resource "local_file" "kibana_docker_playbook" {
 
     vars:
       kibana_image: docker.elastic.co/kibana/kibana:8.19.11
-      kibana_container_name: kibana
       elasticsearch_host: "http://${yandex_compute_instance.web_elasticsearch.network_interface[0].nat_ip_address}:9200"
 
     tasks:
@@ -19,13 +18,13 @@ resource "local_file" "kibana_docker_playbook" {
 
       - name: Stop old Kibana container if exists
         docker_container:
-          name: "{{ kibana_container_name }}"
+          name: kibana-server
           state: absent
           force_kill: yes
 
       - name: Run Kibana container
         docker_container:
-          name: "{{ kibana_container_name }}"
+          name: kibana-server
           image: "{{ kibana_image }}"
           restart_policy: unless-stopped
           published_ports:
