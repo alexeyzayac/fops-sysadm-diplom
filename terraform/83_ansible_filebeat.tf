@@ -19,6 +19,12 @@ resource "local_file" "filebeat_for_nginx_playbook" {
           state: directory
           mode: "0755"
 
+      - name: Create filebeat data directory
+        file:
+          path: "/var/lib/filebeat"
+          state: directory
+          mode: "0755"
+
       - name: Create filebeat config
         copy:
           dest: "{{ filebeat_dir }}/filebeat.yml"
@@ -29,18 +35,53 @@ resource "local_file" "filebeat_for_nginx_playbook" {
                 enabled: true
                 paths:
                   - /var/log/nginx/access.log
-                    fields:
-                      index_name: "nginx-access"
+                fields:
+                  index_name: "nginx-access"
+                fields_under_root: true
+                
               - type: log
                 enabled: true
                 paths:
                   - /var/log/nginx/error.log
-                    fields:
-                      index_name: "nginx-error"
+                fields:
+                  index_name: "nginx-error"
+                fields_under_root: true
+
+            setup.template:
+              name: "nginx"
+              pattern: "filebeat-nginx-*"
+
+            setup.ilm:
+              enabled: false
 
             output.elasticsearch:
               hosts: ["{{ elasticsearch_host }}"]
-              index: "filebeat-nginx-%%{[fields.index_name]}-%%{+yyyy.MM.dd}"
+              indices:
+                - index: "filebeat-nginx-access-%{+yyyy.MM.dd}"
+                  when.equals:
+                    index_name: "nginx-access"
+                - index: "filebeat-nginx-error-%{+yyyy.MM.dd}"
+                  when.equals:
+                    index_name: "nginx-error"
+              
+            logging.level: info
+            logging.to_files: true
+            logging.files:
+              path: /var/log/filebeat
+              name: filebeat
+              keepfiles: 7
+              permissions: 0644
+
+      - name: Wait for Elasticsearch to be ready
+        uri:
+          url: "{{ elasticsearch_host }}"
+          method: GET
+          status_code: 200
+          timeout: 30
+        register: elasticsearch_status
+        until: elasticsearch_status.status == 200
+        retries: 10
+        delay: 10
 
       - name: Pull Filebeat image
         docker_image:
@@ -67,6 +108,14 @@ resource "local_file" "filebeat_for_nginx_playbook" {
             - "/var/log/nginx:/var/log/nginx:ro"
             - "/var/lib/filebeat:/usr/share/filebeat/data"
           state: started
+          
+      - name: Check Filebeat logs
+        shell: |
+          docker logs filebeat --tail 50
+        register: filebeat_logs
+        changed_when: false
+      - debug:
+          var: filebeat_logs.stdout_lines
   YAML
 
   filename = "../ansible/playbook/filebeat_for_nginx_docker.yml"
