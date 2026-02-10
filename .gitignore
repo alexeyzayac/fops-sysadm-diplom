@@ -1,7 +1,6 @@
 ### Local:
 .hosts.ini
-deb
-/deb/***
+filebeat_for_nginx.yml
 
 ### Terraform:
 **/.terraform/

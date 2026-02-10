@@ -3,4 +3,5 @@
 - import_playbook: full-upgrade-all.yml
 - import_playbook: rc.yml
 - import_playbook: install-packages.yml
+- import_playbook: filebeat_for_nginx.yml
 - import_playbook: reboot-all.yml
