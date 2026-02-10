@@ -26,25 +26,5 @@ runcmd:
   - systemctl enable --now docker
   - systemctl restart docker
 
-  # Создание папок для volume
-  - mkdir -p /elasticsearch/data
-  - mkdir -p /elasticsearch/logs
-  - chown -R 1000:1000 /elasticsearch/data /elasticsearch/logs
-  - chmod -R 770 /elasticsearch/data /elasticsearch/logs
-
   # Скачивание образа Elasticsearch
   - docker pull docker.elastic.co/elasticsearch/elasticsearch:8.19.11
-
-  # Запуск контейнера Elasticsearch (массив)
-  - [ docker, run, -d,
-      --name, elasticsearch-server,
-      -p, "9200:9200",
-      -e, "discovery.type=single-node",
-      -e, "cluster.name=alexey-zayac",
-      -e, "network.host=0.0.0.0",
-      -e, "xpack.security.enabled=false",
-      -v, "/elasticsearch/data:/usr/share/elasticsearch/data",
-      -v, "/elasticsearch/logs:/usr/share/elasticsearch/logs",
-      --restart, unless-stopped,
-      "docker.elastic.co/elasticsearch/elasticsearch:8.19.11"
-    ]

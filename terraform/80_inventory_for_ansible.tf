@@ -18,8 +18,6 @@ resource "local_file" "inventory" {
   ansible_user=localadmin
   ansible_ssh_private_key_file=~/.ssh/yandex.cloud/cloud-alexeyzayac
   ansible_python_interpreter=/usr/bin/python3
-
-
   XYZ
 
   filename = "../ansible/.hosts.ini"

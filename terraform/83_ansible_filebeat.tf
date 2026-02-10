@@ -8,6 +8,7 @@ resource "local_file" "filebeat_for_nginx_playbook" {
 
     vars:
       elasticsearch_host: "http://${yandex_compute_instance.web_elasticsearch.network_interface[0].nat_ip_address}:9200"
+      kibana_host: "http://${yandex_compute_instance.web_kibana.network_interface[0].nat_ip_address}:5601"
       filebeat_dir: /filebeat
       filebeat_image: docker.elastic.co/beats/filebeat:8.19.11
 
@@ -42,11 +43,19 @@ resource "local_file" "filebeat_for_nginx_playbook" {
               hosts: ["{{ elasticsearch_host }}"]
               index: "nginx-%%{+yyyy.MM.dd}"
 
+            setup.kibana:
+              host: ["{{ kibana_host }}"]
+
             setup.template.enabled: true
             setup.template.name: "nginx"
             setup.template.pattern: "nginx-*"
 
             logging.level: info
+
+      - name: Pull Filebeat image
+        docker_image:
+          name: "{{ filebeat_image }}"
+          source: pull
 
       - name: Stop old filebeat container if exists
         docker_container:
@@ -69,5 +78,5 @@ resource "local_file" "filebeat_for_nginx_playbook" {
           state: started
   YAML
 
-  filename = "../ansible/playbook/filebeat_for_nginx.yml"
+  filename = "../ansible/playbook/filebeat_for_nginx_docker.yml"
 }

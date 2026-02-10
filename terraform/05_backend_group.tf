@@ -9,6 +9,8 @@ resource "yandex_alb_backend_group" "web_backend_group" {
     healthcheck {
       timeout  = "1s"
       interval = "2s"
+      healthy_threshold = 2
+      unhealthy_threshold = 3
 
       http_healthcheck {
         path = "/"
