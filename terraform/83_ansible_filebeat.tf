@@ -57,10 +57,10 @@ resource "local_file" "filebeat_for_nginx_playbook" {
             output.elasticsearch:
               hosts: ["{{ elasticsearch_host }}"]
               indices:
-                - index: "filebeat-nginx-access-%{+yyyy.MM.dd}"
+                - index: "filebeat-nginx-access-%%{+yyyy.MM.dd}"
                   when.equals:
                     index_name: "nginx-access"
-                - index: "filebeat-nginx-error-%{+yyyy.MM.dd}"
+                - index: "filebeat-nginx-error-%%{+yyyy.MM.dd}"
                   when.equals:
                     index_name: "nginx-error"
               
