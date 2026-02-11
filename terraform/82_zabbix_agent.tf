@@ -24,8 +24,8 @@ resource "local_file" "zabbix_agent_playbook" {
         ansible.builtin.systemd:
           name: zabbix-agent
           state: started
-            enabled: yes
-            daemon_reload: yes
+          enabled: yes
+          daemon_reload: yes
 
     handlers:
       - name: restart zabbix-agent

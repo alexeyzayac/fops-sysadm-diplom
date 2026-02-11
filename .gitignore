@@ -1,4 +1,4 @@
-### Local:
+### Local: (данные файлы создаються автоматически при развёртывание Terraform)
 .hosts.ini
 filebeat_for_nginx.yml
 elasticsearch_docker.yml
