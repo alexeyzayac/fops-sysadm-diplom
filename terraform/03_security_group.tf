@@ -47,6 +47,13 @@ resource "yandex_vpc_security_group" "web_sg" {
   }
 
   ingress {
+    description    = "Allow Zabbix Agent"
+    protocol       = "TCP"
+    port           = 10050
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     description    = "Allow Elasticsearch HTTP API"
     protocol       = "TCP"
     port           = 9200

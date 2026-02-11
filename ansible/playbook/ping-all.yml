@@ -1,14 +1,12 @@
 ---
-# Начало YAML-документа. Можно опустить, но обычно оставляют.
-
 - name: ping-all                        
-  hosts: all                            # запустить на всех хостах из inventory
-  gather_facts: yes                     # собирать факты перед выполнением
-  tasks:                                # блок задач
+  hosts: all
+  gather_facts: yes
   
+  tasks:
     - name: Check connectivity          
-      ansible.builtin.ping:             # встроенный модуль ping — проверка доступности через SSH
-      register: result                  # сохраняет результат выполнения задачи в переменную, которую потом можно использовать в последующих задачах
+      ansible.builtin.ping:
+      register: result
       retries: 3                        # пробуем до 3 раз
       delay: 5                          # с интервалом 5 секунд
       ignore_errors: yes                # если хост недоступен, продолжаем с другими
