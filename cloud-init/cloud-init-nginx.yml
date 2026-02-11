@@ -30,5 +30,5 @@ runcmd:
   - apt install zabbix-agent
 
   # Запуск и включение сервисов
-  - systemctl enable --now nginx zabbix-agent docker
-  - systemctl restart nginx zabbix-agent docker
+  - systemctl enable --now nginx docker
+  - systemctl restart nginx docker
