@@ -1,3 +1,5 @@
+# 07_load_balancer.tf
+
 resource "yandex_alb_load_balancer" "web_alb" {
   name       = "web-alb-${var.flow}"
   network_id = yandex_vpc_network.develop.id

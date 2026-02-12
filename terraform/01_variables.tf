@@ -1,3 +1,5 @@
+# 01_variables.tf
+
 # Переменная для идентификации потока/версии
 variable "flow" {
   type    = string

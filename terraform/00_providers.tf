@@ -1,4 +1,5 @@
-# Блок настроек Terraform
+# 00_providers.tf
+
 terraform {
   # Определение необходимых провайдеров
   required_providers {
