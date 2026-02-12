@@ -1,3 +1,6 @@
+# 11_elasticsearch.tf
+
+# ВМ в зоне d (elasticsearch-server)
 resource "yandex_compute_instance" "web_elasticsearch" {
   name        = "elasticsearch-server"
   hostname    = "elasticsearch-server"
@@ -28,11 +31,8 @@ resource "yandex_compute_instance" "web_elasticsearch" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.develop_d.id
-    nat       = true
-    security_group_ids = [
-      yandex_vpc_security_group.LAN.id,
-      yandex_vpc_security_group.web_sg.id
-    ]
+    subnet_id = yandex_vpc_subnet.private_d.id
+    nat       = false
+    security_group_ids = [yandex_vpc_security_group.elasticsearch_sg.id]
   }
 }

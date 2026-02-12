@@ -1,3 +1,6 @@
+# 12_kibana.tf
+
+# ВМ в зоне d (kibana-server)
 resource "yandex_compute_instance" "web_kibana" {
   name        = "kibana-server"
   hostname    = "kibana-server"
@@ -28,11 +31,8 @@ resource "yandex_compute_instance" "web_kibana" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.develop_d.id
+    subnet_id = yandex_vpc_subnet.public_d.id
     nat       = true
-    security_group_ids = [
-      yandex_vpc_security_group.LAN.id,
-      yandex_vpc_security_group.web_sg.id
-    ]
+    security_group_ids = [yandex_vpc_security_group.kibana_sg.id]
   }
 }

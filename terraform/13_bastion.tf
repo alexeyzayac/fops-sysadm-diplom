@@ -33,8 +33,6 @@ resource "yandex_compute_instance" "bastion" {
   network_interface {
     subnet_id = yandex_vpc_subnet.public_d.id
     nat       = true
-    security_group_ids = [
-      yandex_vpc_security_group.bastion_sg.id
-    ]
+    security_group_ids = [yandex_vpc_security_group.bastion_sg.id]
   }
 }

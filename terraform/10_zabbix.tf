@@ -1,3 +1,7 @@
+# 10_zabbix.tf
+
+
+# ВМ в зоне d (zabbix-server)
 resource "yandex_compute_instance" "web_zabbix" {
   name        = "zabbix-server"
   hostname    = "zabbix-server"
@@ -28,11 +32,8 @@ resource "yandex_compute_instance" "web_zabbix" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.develop_d.id
+    subnet_id = yandex_vpc_subnet.public_d.id
     nat       = true
-    security_group_ids = [
-      yandex_vpc_security_group.LAN.id,
-      yandex_vpc_security_group.web_sg.id
-    ]
+    security_group_ids = [yandex_vpc_security_group.zabbix_sg.id]
   }
 }
