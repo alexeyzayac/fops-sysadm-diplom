@@ -22,6 +22,17 @@ resource "yandex_vpc_route_table" "public_rt" {
   }
 }
 
+# Таблица маршрутизации для приватных подсетей (доступ в интернет, без публичных IP)
+resource "yandex_vpc_route_table" "private_rt" {
+  name       = "private-route-table-${var.flow}"
+  network_id = yandex_vpc_network.develop.id
+
+  static_route {
+    destination_prefix = "0.0.0.0/0"
+    gateway_id         = yandex_vpc_gateway.nat_gateway.id
+  }
+}
+
 # Публичные подсети (с интернетом) - a
 resource "yandex_vpc_subnet" "public_a" {
   name           = "public-${var.flow}-ru-central1-a"
@@ -55,6 +66,7 @@ resource "yandex_vpc_subnet" "private_a" {
   zone           = "ru-central1-a"
   network_id     = yandex_vpc_network.develop.id
   v4_cidr_blocks = ["10.20.1.0/24"]
+  route_table_id = yandex_vpc_route_table.private_rt.id
 }
 
 # Приватные подсети (только локальные маршруты VPC) - b
@@ -63,6 +75,7 @@ resource "yandex_vpc_subnet" "private_b" {
   zone           = "ru-central1-b"
   network_id     = yandex_vpc_network.develop.id
   v4_cidr_blocks = ["10.20.2.0/24"]
+  route_table_id = yandex_vpc_route_table.private_rt.id
 }
 
 # Приватные подсети (только локальные маршруты VPC) - d
@@ -71,4 +84,5 @@ resource "yandex_vpc_subnet" "private_d" {
   zone           = "ru-central1-d"
   network_id     = yandex_vpc_network.develop.id
   v4_cidr_blocks = ["10.20.3.0/24"]
+  route_table_id = yandex_vpc_route_table.private_rt.id
 }

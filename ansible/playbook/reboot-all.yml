@@ -1,12 +1,27 @@
+---
 - name: Reboot servers
-  hosts: all
+  hosts: nginx:zabbix:elasticsearch:kibana
   become: yes
   gather_facts: yes
   tasks:
 
     - name: Reboot the server
       ansible.builtin.reboot:
-        reboot_timeout: 600
+        reboot_timeout: 300
+
+    - name: Show IP after reboot
+      debug:
+        msg: "Host {{ inventory_hostname }} is back online with IP {{ ansible_default_ipv4.address }}"
+
+- name: Reboot servers
+  hosts: bastion
+  become: yes
+  gather_facts: yes
+  tasks:
+
+    - name: Reboot the server
+      ansible.builtin.reboot:
+        reboot_timeout: 300
 
     - name: Show IP after reboot
       debug:
