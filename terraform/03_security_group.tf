@@ -169,6 +169,15 @@ resource "yandex_vpc_security_group" "alb_sg" {
     v4_cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Обязательное правило для health checks от инфраструктуры Yandex Cloud идут на порт 30080
+  # https://yandex.cloud/ru/docs/network-load-balancer/concepts/health-check
+  ingress {
+    description    = "Health checks from Yandex Cloud"
+    protocol       = "TCP"
+    port           = 30080
+    v4_cidr_blocks = ["198.18.235.0/24", "198.18.248.0/24"]
+  }
+
   egress {
     description    = "To web servers on port 80 (private subnets)"
     protocol       = "TCP"
