@@ -1,3 +1,5 @@
+# 84_ansible_filebeat.tf
+
 resource "local_file" "filebeat_for_nginx_playbook" {
   content = <<-YAML
   ---
@@ -7,8 +9,8 @@ resource "local_file" "filebeat_for_nginx_playbook" {
     gather_facts: yes
 
     vars:
-      elasticsearch_host: "http://${yandex_compute_instance.web_elasticsearch.network_interface[0].nat_ip_address}:9200"
-      kibana_host: "http://${yandex_compute_instance.web_kibana.network_interface[0].nat_ip_address}:5601"
+      elasticsearch_host: "http://${yandex_compute_instance.web_elasticsearch.network_interface[0].ip_address}:9200"
+      kibana_host: "http://${yandex_compute_instance.web_kibana.network_interface[0].ip_address}:5601"
       filebeat_image: docker.elastic.co/beats/filebeat:8.19.11
 
     tasks:

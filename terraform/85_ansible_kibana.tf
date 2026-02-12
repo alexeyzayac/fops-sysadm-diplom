@@ -1,3 +1,5 @@
+# 85_ansible_kibana.tf
+
 resource "local_file" "kibana_docker_playbook" {
   content = <<-YAML
   ---
@@ -8,7 +10,7 @@ resource "local_file" "kibana_docker_playbook" {
 
     vars:
       kibana_image: docker.elastic.co/kibana/kibana:8.19.11
-      elasticsearch_host: "http://${yandex_compute_instance.web_elasticsearch.network_interface[0].nat_ip_address}:9200"
+      elasticsearch_host: "http://${yandex_compute_instance.web_elasticsearch.network_interface[0].ip_address}:9200"
 
     tasks:
       - name: Pull Kibana image

@@ -135,7 +135,10 @@ resource "yandex_vpc_security_group" "zabbix_sg" {
     description    = "Zabbix server port (agents connect to 10051)"
     protocol       = "TCP"
     port           = 10051
-    security_group_id = yandex_vpc_security_group.web_sg.id
+    v4_cidr_blocks = [
+      yandex_vpc_subnet.private_a.v4_cidr_blocks[0],
+      yandex_vpc_subnet.private_b.v4_cidr_blocks[0]
+    ]
   }
 
   ingress {

@@ -1,4 +1,5 @@
 #cloud-config
+
 datasource:
   Ec2:
     strict_id: false
@@ -25,6 +26,3 @@ runcmd:
   # Запуск и включение сервисо
   - systemctl enable --now docker
   - systemctl restart docker
-
-  # Скачивание образа Elasticsearch
-  - docker pull docker.elastic.co/elasticsearch/elasticsearch:8.19.11

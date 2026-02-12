@@ -1,3 +1,5 @@
+# 82_zabbix_agent.tf
+
 resource "local_file" "zabbix_agent_playbook" {
   content = <<-YAML
   ---
@@ -7,7 +9,7 @@ resource "local_file" "zabbix_agent_playbook" {
     gather_facts: yes
 
     vars:
-      zabbix_server_host: "${yandex_compute_instance.web_zabbix.network_interface[0].nat_ip_address}"
+      zabbix_server_host: "${yandex_compute_instance.web_zabbix.network_interface[0].ip_address}"
 
     tasks:
       - name: Configure Zabbix agent

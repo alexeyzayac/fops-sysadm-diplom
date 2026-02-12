@@ -1,5 +1,5 @@
 ### Local: (данные файлы создаються автоматически при развёртывание Terraform)
-.hosts.ini
+inventory.ini
 filebeat_for_nginx.yml
 elasticsearch_docker.yml
 filebeat_for_nginx_docker.yml
