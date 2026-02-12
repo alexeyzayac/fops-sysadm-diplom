@@ -31,7 +31,7 @@ resource "yandex_compute_instance" "web_a_nginx" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.private_a.id
+    subnet_id = yandex_vpc_subnet.subnet_a.id
     nat       = false
     security_group_ids = [yandex_vpc_security_group.web_sg.id]
   }
@@ -68,7 +68,7 @@ resource "yandex_compute_instance" "web_b_nginx" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.private_b.id
+    subnet_id = yandex_vpc_subnet.subnet_b.id
     nat       = false
     security_group_ids = [yandex_vpc_security_group.web_sg.id]
   }

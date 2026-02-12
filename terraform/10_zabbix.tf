@@ -32,7 +32,7 @@ resource "yandex_compute_instance" "web_zabbix" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.public_d.id
+    subnet_id = yandex_vpc_subnet.subnet_d.id
     nat       = true
     security_group_ids = [yandex_vpc_security_group.zabbix_sg.id]
   }

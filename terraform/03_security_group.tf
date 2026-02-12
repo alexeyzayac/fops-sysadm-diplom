@@ -136,8 +136,8 @@ resource "yandex_vpc_security_group" "zabbix_sg" {
     protocol       = "TCP"
     port           = 10051
     v4_cidr_blocks = [
-      yandex_vpc_subnet.private_a.v4_cidr_blocks[0],
-      yandex_vpc_subnet.private_b.v4_cidr_blocks[0]
+      yandex_vpc_subnet.subnet_a.v4_cidr_blocks[0],
+      yandex_vpc_subnet.subnet_b.v4_cidr_blocks[0]
     ]
   }
 

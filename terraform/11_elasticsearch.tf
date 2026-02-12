@@ -31,7 +31,7 @@ resource "yandex_compute_instance" "web_elasticsearch" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.private_d.id
+    subnet_id = yandex_vpc_subnet.subnet_d.id
     nat       = false
     security_group_ids = [yandex_vpc_security_group.elasticsearch_sg.id]
   }
