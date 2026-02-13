@@ -13,7 +13,7 @@
       debug:
         msg: "Host {{ inventory_hostname }} is back online with IP {{ ansible_default_ipv4.address }}"
 
-- name: Reboot servers
+- name: Reboot bastion
   hosts: bastion
   become: yes
   gather_facts: yes

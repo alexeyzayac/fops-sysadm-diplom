@@ -179,9 +179,9 @@ resource "yandex_vpc_security_group" "alb_sg" {
   }
 
   egress {
-    description    = "To web servers on port 80 (private subnets)"
+    description    = "To web servers on port 80 (nginx server)"
     protocol       = "TCP"
     port           = 80
-    v4_cidr_blocks = ["10.20.1.0/24", "10.20.2.0/24"]
+    v4_cidr_blocks = ["10.10.1.0/24", "10.10.2.0/24"]
   }
 }

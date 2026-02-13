@@ -4,7 +4,7 @@ resource "local_file" "zabbix_agent_playbook" {
   content = <<-YAML
   ---
   - name: zabbix_agent
-    hosts: nginx
+    hosts: all
     become: yes
     gather_facts: yes
 

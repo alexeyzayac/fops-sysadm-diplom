@@ -1,6 +1,0 @@
----
-- import_playbook: ping-all.yml
-- import_playbook: full-upgrade-all.yml
-- import_playbook: rc.yml
-- import_playbook: install-packages.yml
-- import_playbook: reboot-all.yml

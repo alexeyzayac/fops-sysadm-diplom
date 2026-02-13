@@ -1,8 +1,8 @@
 ---
-- name: install_packages
+- name: install_packages (all)
   hosts: all
   become: yes
-  gather_facts: no
+  gather_facts: yes
   tasks:
 
     - name: install nano
@@ -58,9 +58,4 @@
     - name: install curl
       ansible.builtin.apt:
         name: curl
-        state: latest
-
-    - name: install rsync
-      ansible.builtin.apt:
-        name: rsync
         state: latest
