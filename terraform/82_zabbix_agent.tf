@@ -12,7 +12,7 @@ resource "local_file" "zabbix_agent_playbook" {
       zabbix_server_host: "${yandex_compute_instance.web_zabbix.network_interface[0].ip_address}"
 
     tasks:
-      - name: Configure Zabbix agent
+      - name: Конфигурация Zabbix agent
         ansible.builtin.shell:
           cmd: |
             sed -i \
@@ -22,7 +22,7 @@ resource "local_file" "zabbix_agent_playbook" {
               /etc/zabbix/zabbix_agentd.conf
         notify: restart zabbix-agent
 
-      - name: Start and enable zabbix-agent
+      - name: Запуск и включение zabbix-agent
         ansible.builtin.systemd:
           name: zabbix-agent
           state: started

@@ -1,5 +1,5 @@
 ---
-- name: Reboot servers
+- name: Перезагрузка серверов
   hosts: nginx:zabbix:elasticsearch:kibana
   become: yes
   gather_facts: yes
@@ -13,7 +13,7 @@
       debug:
         msg: "Host {{ inventory_hostname }} is back online with IP {{ ansible_default_ipv4.address }}"
 
-- name: Reboot bastion
+- name: Перезагрузка bastion-сервера
   hosts: bastion
   become: yes
   gather_facts: yes

@@ -18,7 +18,7 @@ resource "local_file" "kibana_docker_playbook" {
           name: "{{ kibana_image }}"
           source: pull
 
-      - name: Stop old Kibana container if exists
+      - name: Остановливае старый контейнер Kibana, если он существует
         docker_container:
           name: kibana-server
           state: absent

@@ -12,7 +12,7 @@ resource "local_file" "elasticsearch_docker_playbook" {
       elasticsearch_image: docker.elastic.co/elasticsearch/elasticsearch:8.19.11
 
     tasks:
-      - name: Create Elasticsearch data directory
+      - name: Создание Elasticsearch data директория
         file:
           path: "/elasticsearch/data"
           state: directory
@@ -20,7 +20,7 @@ resource "local_file" "elasticsearch_docker_playbook" {
           group: 1000
           mode: "0770"
 
-      - name: Create Elasticsearch logs directory
+      - name: Создание Elasticsearch logs директория
         file:
           path: "/elasticsearch/logs"
           state: directory
@@ -33,7 +33,7 @@ resource "local_file" "elasticsearch_docker_playbook" {
           name: "{{ elasticsearch_image }}"
           source: pull
 
-      - name: Stop old Elasticsearch container if exists
+      - name: Остановливае старый контейнер Elasticsearch, если он существует
         docker_container:
           name: elasticsearch-server
           state: absent

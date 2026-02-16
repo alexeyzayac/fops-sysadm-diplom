@@ -1,0 +1,3 @@
+---
+- import_playbook: .00_run-all.yml
+- import_playbook: .00_run-all-fops-sysadm.yml
