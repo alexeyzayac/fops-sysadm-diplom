@@ -77,3 +77,5 @@
 ![img](img/screenshot_2.png)
 
 ### Резервное копирование
+
+Был создан snapshot дисков всех ВМ путём [terraform](terraform/79_snapshot_schedule.tf).
