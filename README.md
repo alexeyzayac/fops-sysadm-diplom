@@ -79,3 +79,10 @@
 ### Резервное копирование
 
 Был создан snapshot дисков всех ВМ путём [terraform](terraform/79_snapshot_schedule.tf).
+
+![img](img/screenshot_5.png)
+
+
+**Полная инфраструктура в облаке выглядит таким образом:**
+
+![img](img/screenshot_4.png)
