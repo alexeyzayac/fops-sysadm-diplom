@@ -14,7 +14,7 @@
 
 #### Подьём инфраструктуры:
 
-Для проверки рекумендуеся сгенерировать: ```service_account_key_file``` для [terraform/00_providers.tf](terraform/00_providers.tf)
+Для проверки необходимо сгенерировать: ```service_account_key_file``` для [terraform/00_providers.tf](terraform/00_providers.tf)
 
 и выполнить правки переменных ```cloud_id``` & ```folder_id```, а также при желании ```flow``` в [terraform/01_variables.tf](terraform/01_variables.tf  )
 
