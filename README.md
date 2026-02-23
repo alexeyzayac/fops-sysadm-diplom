@@ -12,6 +12,23 @@
 
 [Ansible](ansible/playbook/) - плейбуки для настройки серверов.
 
+#### Подьём инфраструктуры:
+
+Для проверки рекумендуеся сгенерировать: ```service_account_key_file``` для [terraform/00_providers.tf](terraform/00_providers.tf)
+
+и выполнить правки переменных ```cloud_id``` & ```folder_id```, а также при желании ```flow``` в [terraform/01_variables.tf](terraform/01_variables.tf  )
+
+```bash
+cd terraform/
+terraform init
+terraform apply
+cd ../ansible/
+ansible-playbook playbook/.all.yml
+```
+
+После выполнения данных команд остаётся выполниь импорт дашбордов. 
+
+
 ### Сайт
 
 В рамках развертывания инфраструктуры с помощью Terraform создаются [два виртуальных сервера](terraform/09_nginx.tf) с первичной настройкой, указанной в [cloud-init](cloud-init/cloud-init-nginx.yml), также через данный скрипты инициализации происходит установка на данные машины zabbix-agent. На заключительном этапе подготовки окружения задействуется Ansible: с его помощью на серверах [генерируется простой веб-сайт](ansible/playbook/05_install_packages_nginx.yml), отображающий hostname каждого из экземпляров. Для балансировки нагрузки сконфигурирован [Application Load Balancer](terraform/07_load_balancer.tf), опирающийся на созданные [Target Group](terraform/05_backend_group.tf), [Backend Group](terraform/05_backend_group.tf) и [HTTP-роутер](terraform/06_http_router.tf)
