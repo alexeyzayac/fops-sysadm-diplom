@@ -22,7 +22,9 @@ resource "yandex_compute_instance" "web_a_nginx" {
   }
 
   metadata = {
-    user-data          = file("../cloud-init/cloud-init-nginx.yml")
+    user-data = templatefile("../cloud-init/cloud-init-nginx.tpl", {
+      public_key = tls_private_key.ssh.public_key_openssh
+    })
     serial-port-enable = 1
   }
 
@@ -31,8 +33,8 @@ resource "yandex_compute_instance" "web_a_nginx" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.subnet_a.id
-    nat       = false
+    subnet_id          = yandex_vpc_subnet.subnet_a.id
+    nat                = false
     security_group_ids = [yandex_vpc_security_group.web_sg.id]
   }
 }
@@ -59,7 +61,9 @@ resource "yandex_compute_instance" "web_b_nginx" {
   }
 
   metadata = {
-    user-data          = file("../cloud-init/cloud-init-nginx.yml")
+    user-data = templatefile("../cloud-init/cloud-init-nginx.tpl", {
+      public_key = tls_private_key.ssh.public_key_openssh
+    })
     serial-port-enable = 1
   }
 
@@ -68,8 +72,8 @@ resource "yandex_compute_instance" "web_b_nginx" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.subnet_b.id
-    nat       = false
+    subnet_id          = yandex_vpc_subnet.subnet_b.id
+    nat                = false
     security_group_ids = [yandex_vpc_security_group.web_sg.id]
   }
 }

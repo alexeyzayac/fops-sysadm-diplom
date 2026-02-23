@@ -1,6 +1,5 @@
 # 11_elasticsearch.tf
 
-# ВМ в зоне d (elasticsearch-server)
 resource "yandex_compute_instance" "web_elasticsearch" {
   name        = "elasticsearch-server"
   hostname    = "elasticsearch-server"
@@ -22,7 +21,9 @@ resource "yandex_compute_instance" "web_elasticsearch" {
   }
 
   metadata = {
-    user-data          = file("../cloud-init/cloud-init-elasticsearch.yml")
+    user-data = templatefile("../cloud-init/cloud-init-elasticsearch.tpl", {
+      public_key = tls_private_key.ssh.public_key_openssh
+    })
     serial-port-enable = 1
   }
 
@@ -31,8 +32,8 @@ resource "yandex_compute_instance" "web_elasticsearch" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.subnet_d.id
-    nat       = false
+    subnet_id          = yandex_vpc_subnet.subnet_d.id
+    nat                = false
     security_group_ids = [yandex_vpc_security_group.elasticsearch_sg.id]
   }
 }

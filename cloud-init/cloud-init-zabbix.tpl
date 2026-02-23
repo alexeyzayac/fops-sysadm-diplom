@@ -11,8 +11,7 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
     ssh_authorized_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ2aIaWw6MfU2/VvqiSWCulDyMc+eQGlE0/I3TXcbdGC ufo@NEXA-HOST
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIArGCmMkSsC4lrpHDNscdEzP+tReXPKyAWdQe45PXX+/ user-host@HOST-TSOH
+      - ${public_key}
 
 packages:
   - nginx
@@ -20,7 +19,7 @@ packages:
   - postgresql
 
 runcmd:
-  # Обновление системы                                                      #
+  # Обновление системы
   - apt update && apt -y full-upgrade
 
   # Установка Zabbix

@@ -1,6 +1,5 @@
 # 12_kibana.tf
 
-# ВМ в зоне d (kibana-server)
 resource "yandex_compute_instance" "web_kibana" {
   name        = "kibana-server"
   hostname    = "kibana-server"
@@ -22,7 +21,9 @@ resource "yandex_compute_instance" "web_kibana" {
   }
 
   metadata = {
-    user-data          = file("../cloud-init/cloud-init-kibana.yml")
+    user-data = templatefile("../cloud-init/cloud-init-kibana.tpl", {
+      public_key = tls_private_key.ssh.public_key_openssh
+    })
     serial-port-enable = 1
   }
 
@@ -31,8 +32,8 @@ resource "yandex_compute_instance" "web_kibana" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.subnet_d.id
-    nat       = true
+    subnet_id          = yandex_vpc_subnet.subnet_d.id
+    nat                = true
     security_group_ids = [yandex_vpc_security_group.kibana_sg.id]
   }
 }

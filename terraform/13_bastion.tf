@@ -1,6 +1,5 @@
 # 13_bastion.tf
 
-# Bastion server (публичная подсеть D)
 resource "yandex_compute_instance" "bastion" {
   name        = "bastion-server"
   hostname    = "bastion-server"
@@ -22,7 +21,9 @@ resource "yandex_compute_instance" "bastion" {
   }
 
   metadata = {
-    user-data          = file("../cloud-init/cloud-init-bastion.yml")
+    user-data = templatefile("../cloud-init/cloud-init-bastion.tpl", {
+      public_key = tls_private_key.ssh.public_key_openssh
+    })
     serial-port-enable = 1
   }
 
@@ -31,8 +32,8 @@ resource "yandex_compute_instance" "bastion" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.subnet_d.id
-    nat       = true
+    subnet_id          = yandex_vpc_subnet.subnet_d.id
+    nat                = true
     security_group_ids = [yandex_vpc_security_group.bastion_sg.id]
   }
 }
