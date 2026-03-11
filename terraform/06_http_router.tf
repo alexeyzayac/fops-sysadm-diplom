@@ -1,3 +1,6 @@
+# 06_http_router.tf
+
+# Обьявление HTTP Router
 resource "yandex_alb_http_router" "web_router" {
   name = "web-router-${var.flow}"
 }

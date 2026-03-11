@@ -1,4 +1,6 @@
-### ВМ в зоне A
+# 09_nginx.tf
+
+# ВМ в зоне a (nginx-1-server)
 resource "yandex_compute_instance" "web_a_nginx" {
   name        = "nginx-1-server"
   hostname    = "nginx-1-server"
@@ -20,7 +22,9 @@ resource "yandex_compute_instance" "web_a_nginx" {
   }
 
   metadata = {
-    user-data          = file("../cloud-init/cloud-init-nginx.yml")
+    user-data = templatefile("../cloud-init/cloud-init-nginx.tpl", {
+      public_key = tls_private_key.ssh.public_key_openssh
+    })
     serial-port-enable = 1
   }
 
@@ -29,16 +33,13 @@ resource "yandex_compute_instance" "web_a_nginx" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.develop_a.id
-    nat       = true
-    security_group_ids = [
-      yandex_vpc_security_group.LAN.id,
-      yandex_vpc_security_group.web_sg.id
-    ]
+    subnet_id          = yandex_vpc_subnet.subnet_a.id
+    nat                = false
+    security_group_ids = [yandex_vpc_security_group.web_sg.id]
   }
 }
 
-### ВМ в зоне B
+# ВМ в зоне b (nginx-2-server)
 resource "yandex_compute_instance" "web_b_nginx" {
   name        = "nginx-2-server"
   hostname    = "nginx-2-server"
@@ -60,7 +61,9 @@ resource "yandex_compute_instance" "web_b_nginx" {
   }
 
   metadata = {
-    user-data          = file("../cloud-init/cloud-init-nginx.yml")
+    user-data = templatefile("../cloud-init/cloud-init-nginx.tpl", {
+      public_key = tls_private_key.ssh.public_key_openssh
+    })
     serial-port-enable = 1
   }
 
@@ -69,11 +72,8 @@ resource "yandex_compute_instance" "web_b_nginx" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.develop_b.id
-    nat       = true
-    security_group_ids = [
-      yandex_vpc_security_group.LAN.id,
-      yandex_vpc_security_group.web_sg.id
-    ]
+    subnet_id          = yandex_vpc_subnet.subnet_b.id
+    nat                = false
+    security_group_ids = [yandex_vpc_security_group.web_sg.id]
   }
 }

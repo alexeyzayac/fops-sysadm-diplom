@@ -1,3 +1,5 @@
+# 84_ansible_filebeat.tf
+
 resource "local_file" "filebeat_for_nginx_playbook" {
   content = <<-YAML
   ---
@@ -7,24 +9,24 @@ resource "local_file" "filebeat_for_nginx_playbook" {
     gather_facts: yes
 
     vars:
-      elasticsearch_host: "http://${yandex_compute_instance.web_elasticsearch.network_interface[0].nat_ip_address}:9200"
-      kibana_host: "http://${yandex_compute_instance.web_kibana.network_interface[0].nat_ip_address}:5601"
+      elasticsearch_host: "http://${yandex_compute_instance.web_elasticsearch.network_interface[0].ip_address}:9200"
+      kibana_host: "http://${yandex_compute_instance.web_kibana.network_interface[0].ip_address}:5601"
       filebeat_image: docker.elastic.co/beats/filebeat:8.19.11
 
     tasks:
-      - name: Create filebeat directory
+      - name: Создание filebeat директория
         file:
           path: "/filebeat"
           state: directory
           mode: "0755"
 
-      - name: Create filebeat data directory
+      - name: Создание filebeat data директория
         file:
           path: "/var/lib/filebeat"
           state: directory
           mode: "0755"
 
-      - name: Create filebeat config
+      - name: Создание filebeat конфига
         copy:
           dest: "/filebeat/filebeat.yml"
           mode: "0644"
@@ -76,7 +78,7 @@ resource "local_file" "filebeat_for_nginx_playbook" {
           name: "{{ filebeat_image }}"
           source: pull
 
-      - name: Stop old filebeat container if exists
+      - name: Остановливае старый контейнер filebeat, если он существует
         docker_container:
           name: filebeat
           state: absent

@@ -1,14 +1,14 @@
-# 11_elasticsearch.tf
+# 13_bastion.tf
 
-resource "yandex_compute_instance" "web_elasticsearch" {
-  name        = "elasticsearch-server"
-  hostname    = "elasticsearch-server"
+resource "yandex_compute_instance" "bastion" {
+  name        = "bastion-server"
+  hostname    = "bastion-server"
   platform_id = "standard-v3"
   zone        = "ru-central1-d"
 
   resources {
     cores         = 2
-    memory        = 2
+    memory        = 1
     core_fraction = 20
   }
 
@@ -16,12 +16,12 @@ resource "yandex_compute_instance" "web_elasticsearch" {
     initialize_params {
       image_id = data.yandex_compute_image.ubuntu_2404_lts.image_id
       type     = "network-hdd"
-      size     = 20
+      size     = 10
     }
   }
 
   metadata = {
-    user-data = templatefile("../cloud-init/cloud-init-elasticsearch.tpl", {
+    user-data = templatefile("../cloud-init/cloud-init-bastion.tpl", {
       public_key = tls_private_key.ssh.public_key_openssh
     })
     serial-port-enable = 1
@@ -33,7 +33,7 @@ resource "yandex_compute_instance" "web_elasticsearch" {
 
   network_interface {
     subnet_id          = yandex_vpc_subnet.subnet_d.id
-    nat                = false
-    security_group_ids = [yandex_vpc_security_group.elasticsearch_sg.id]
+    nat                = true
+    security_group_ids = [yandex_vpc_security_group.bastion_sg.id]
   }
 }

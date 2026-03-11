@@ -1,3 +1,5 @@
+# 10_zabbix.tf
+
 resource "yandex_compute_instance" "web_zabbix" {
   name        = "zabbix-server"
   hostname    = "zabbix-server"
@@ -19,7 +21,9 @@ resource "yandex_compute_instance" "web_zabbix" {
   }
 
   metadata = {
-    user-data          = file("../cloud-init/cloud-init-zabbix.yml")
+    user-data = templatefile("../cloud-init/cloud-init-zabbix.tpl", {
+      public_key = tls_private_key.ssh.public_key_openssh
+    })
     serial-port-enable = 1
   }
 
@@ -28,11 +32,8 @@ resource "yandex_compute_instance" "web_zabbix" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.develop_d.id
-    nat       = true
-    security_group_ids = [
-      yandex_vpc_security_group.LAN.id,
-      yandex_vpc_security_group.web_sg.id
-    ]
+    subnet_id          = yandex_vpc_subnet.subnet_d.id
+    nat                = true
+    security_group_ids = [yandex_vpc_security_group.zabbix_sg.id]
   }
 }

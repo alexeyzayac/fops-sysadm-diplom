@@ -1,0 +1,28 @@
+---
+- name: Перезагрузка серверов
+  hosts: nginx:zabbix:elasticsearch:kibana
+  become: yes
+  gather_facts: yes
+  tasks:
+
+    - name: Reboot the server
+      ansible.builtin.reboot:
+        reboot_timeout: 300
+
+    - name: Show IP after reboot
+      debug:
+        msg: "Host {{ inventory_hostname }} is back online with IP {{ ansible_default_ipv4.address }}"
+
+- name: Перезагрузка bastion-сервера
+  hosts: bastion
+  become: yes
+  gather_facts: yes
+  tasks:
+
+    - name: Reboot the server
+      ansible.builtin.reboot:
+        reboot_timeout: 300
+
+    - name: Show IP after reboot
+      debug:
+        msg: "Host {{ inventory_hostname }} is back online with IP {{ ansible_default_ipv4.address }}"

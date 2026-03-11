@@ -1,16 +1,18 @@
+# 82_zabbix_agent.tf
+
 resource "local_file" "zabbix_agent_playbook" {
   content = <<-YAML
   ---
   - name: zabbix_agent
-    hosts: nginx
+    hosts: nginx:kibana:elasticsearch
     become: yes
     gather_facts: yes
 
     vars:
-      zabbix_server_host: "${yandex_compute_instance.web_zabbix.network_interface[0].nat_ip_address}"
+      zabbix_server_host: "${yandex_compute_instance.web_zabbix.network_interface[0].ip_address}"
 
     tasks:
-      - name: Configure Zabbix agent
+      - name: Конфигурация Zabbix agent
         ansible.builtin.shell:
           cmd: |
             sed -i \
@@ -20,7 +22,7 @@ resource "local_file" "zabbix_agent_playbook" {
               /etc/zabbix/zabbix_agentd.conf
         notify: restart zabbix-agent
 
-      - name: Start and enable zabbix-agent
+      - name: Запуск и включение zabbix-agent
         ansible.builtin.systemd:
           name: zabbix-agent
           state: started

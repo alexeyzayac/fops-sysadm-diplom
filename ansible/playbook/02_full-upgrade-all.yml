@@ -1,5 +1,5 @@
 ---
-- name: full-system-maintenance
+- name: full-system-servers
   hosts: all
   become: yes         
   gather_facts: yes    

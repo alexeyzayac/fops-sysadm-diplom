@@ -1,4 +1,5 @@
 #cloud-config
+
 datasource:
   Ec2:
     strict_id: false
@@ -10,18 +11,16 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
     ssh_authorized_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ2aIaWw6MfU2/VvqiSWCulDyMc+eQGlE0/I3TXcbdGC ufo@NEXA-HOST
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIArGCmMkSsC4lrpHDNscdEzP+tReXPKyAWdQe45PXX+/ user-host@HOST-TSOH
+      - ${public_key}
 
 packages:
-  - nginx
   - curl
   - docker.io
+  - nginx
 
 runcmd:
   # Обновление системы
-  - apt update
-  - apt -y full-upgrade
+  - apt update && apt -y full-upgrade
 
   # Установка Zabbix-agent
   - wget https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu24.04_all.deb
@@ -30,5 +29,5 @@ runcmd:
   - apt install -y zabbix-agent
 
   # Запуск и включение сервисов
-  - systemctl enable --now nginx docker
-  - systemctl restart nginx docker
+  - systemctl enable --now docker nginx
+  - systemctl restart docker nginx

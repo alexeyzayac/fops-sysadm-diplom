@@ -12,8 +12,8 @@
         home: /root
       - name: localadmin
         home: /home/localadmin
+  
   tasks:
-
     - name: Копируем файлы в /etc/skel
       copy:
         src: "{{ item }}"

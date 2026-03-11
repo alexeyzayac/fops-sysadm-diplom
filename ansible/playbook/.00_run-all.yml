@@ -1,0 +1,7 @@
+---
+- import_playbook: 01_ping-all.yml
+- import_playbook: 02_full-upgrade-all.yml
+- import_playbook: 03_install-packages.yml
+- import_playbook: 04_rc.yml
+- import_playbook: 05_install_packages_nginx.yml
+- import_playbook: 00_reboot-all.yml

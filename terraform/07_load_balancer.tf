@@ -1,3 +1,5 @@
+# 07_load_balancer.tf
+
 resource "yandex_alb_load_balancer" "web_alb" {
   name       = "web-alb-${var.flow}"
   network_id = yandex_vpc_network.develop.id
@@ -5,12 +7,12 @@ resource "yandex_alb_load_balancer" "web_alb" {
   allocation_policy {
     location {
       zone_id   = "ru-central1-a"
-      subnet_id = yandex_vpc_subnet.develop_a.id
+      subnet_id = yandex_vpc_subnet.subnet_a.id
     }
 
     location {
       zone_id   = "ru-central1-b"
-      subnet_id = yandex_vpc_subnet.develop_b.id
+      subnet_id = yandex_vpc_subnet.subnet_b.id
     }
   }
 
@@ -21,7 +23,6 @@ resource "yandex_alb_load_balancer" "web_alb" {
       address {
         external_ipv4_address {}
       }
-
       ports = [80]
     }
 
@@ -31,4 +32,6 @@ resource "yandex_alb_load_balancer" "web_alb" {
       }
     }
   }
+
+  security_group_ids = [yandex_vpc_security_group.alb_sg.id]
 }
