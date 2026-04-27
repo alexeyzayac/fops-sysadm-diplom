@@ -1,8 +1,5 @@
-# 03_security_group.tf
-
-# Настройка сервера bastion
 resource "yandex_vpc_security_group" "bastion_sg" {
-  name       = "bastion-sg-${var.flow}"
+  name       = "bastion-sg-${var.project}"
   network_id = yandex_vpc_network.develop.id
 
   ingress {
@@ -21,29 +18,28 @@ resource "yandex_vpc_security_group" "bastion_sg" {
   }
 }
 
-# Настройка серверов nginx
 resource "yandex_vpc_security_group" "web_sg" {
-  name       = "web-sg-${var.flow}"
+  name       = "web-sg-${var.project}"
   network_id = yandex_vpc_network.develop.id
 
   ingress {
-    description    = "HTTP from ALB"
-    protocol       = "TCP"
-    port           = 80
+    description       = "HTTP from ALB"
+    protocol          = "TCP"
+    port              = 80
     security_group_id = yandex_vpc_security_group.alb_sg.id
   }
 
   ingress {
-    description    = "Zabbix agent from Zabbix server"
-    protocol       = "TCP"
-    port           = 10050
+    description       = "Zabbix agent from Zabbix server"
+    protocol          = "TCP"
+    port              = 10050
     security_group_id = yandex_vpc_security_group.zabbix_sg.id
   }
 
   ingress {
-    description    = "SSH from bastion"
-    protocol       = "TCP"
-    port           = 22
+    description       = "SSH from bastion"
+    protocol          = "TCP"
+    port              = 22
     security_group_id = yandex_vpc_security_group.bastion_sg.id
   }
 
@@ -56,29 +52,57 @@ resource "yandex_vpc_security_group" "web_sg" {
   }
 }
 
-# Настройка сервера Elasticsearch
-resource "yandex_vpc_security_group" "elasticsearch_sg" {
-  name       = "elasticsearch-sg-${var.flow}"
+resource "yandex_vpc_security_group" "alb_sg" {
+  name       = "alb-sg-${var.project}"
   network_id = yandex_vpc_network.develop.id
 
   ingress {
-    description          = "Elasticsearch API from Kibana"
-    protocol             = "TCP"
-    port                 = 9200
+    description    = "HTTP from internet"
+    protocol       = "TCP"
+    port           = 80
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description    = "Health checks from ALB infrastructure"
+    protocol       = "TCP"
+    port           = 30080
+    v4_cidr_blocks = ["198.18.235.0/24", "198.18.248.0/24"]
+  }
+
+  egress {
+    description    = "To web servers on port 80"
+    protocol       = "TCP"
+    port           = 80
+    v4_cidr_blocks = [
+      yandex_vpc_subnet.this["subnet_a"].v4_cidr_blocks[0],
+      yandex_vpc_subnet.this["subnet_b"].v4_cidr_blocks[0]
+    ]
+  }
+}
+
+resource "yandex_vpc_security_group" "elasticsearch_sg" {
+  name       = "elasticsearch-sg-${var.project}"
+  network_id = yandex_vpc_network.develop.id
+
+  ingress {
+    description       = "Elasticsearch API from Kibana"
+    protocol          = "TCP"
+    port              = 9200
     security_group_id = yandex_vpc_security_group.kibana_sg.id
   }
 
   ingress {
-    description          = "Elasticsearch API from Filebeat (web servers)"
-    protocol             = "TCP"
-    port                 = 9200
+    description       = "Elasticsearch API from Filebeat (web servers)"
+    protocol          = "TCP"
+    port              = 9200
     security_group_id = yandex_vpc_security_group.web_sg.id
   }
 
   ingress {
-    description    = "SSH from bastion"
-    protocol       = "TCP"
-    port           = 22
+    description       = "SSH from bastion"
+    protocol          = "TCP"
+    port              = 22
     security_group_id = yandex_vpc_security_group.bastion_sg.id
   }
 
@@ -91,9 +115,8 @@ resource "yandex_vpc_security_group" "elasticsearch_sg" {
   }
 }
 
-# Настройка сервера Kibana 
 resource "yandex_vpc_security_group" "kibana_sg" {
-  name       = "kibana-sg-${var.flow}"
+  name       = "kibana-sg-${var.project}"
   network_id = yandex_vpc_network.develop.id
 
   ingress {
@@ -104,9 +127,9 @@ resource "yandex_vpc_security_group" "kibana_sg" {
   }
 
   ingress {
-    description    = "SSH from bastion"
-    protocol       = "TCP"
-    port           = 22
+    description       = "SSH from bastion"
+    protocol          = "TCP"
+    port              = 22
     security_group_id = yandex_vpc_security_group.bastion_sg.id
   }
 
@@ -119,9 +142,8 @@ resource "yandex_vpc_security_group" "kibana_sg" {
   }
 }
 
-# Настройка сервера Zabbix 
 resource "yandex_vpc_security_group" "zabbix_sg" {
-  name       = "zabbix-sg-${var.flow}"
+  name       = "zabbix-sg-${var.project}"
   network_id = yandex_vpc_network.develop.id
 
   ingress {
@@ -132,19 +154,19 @@ resource "yandex_vpc_security_group" "zabbix_sg" {
   }
 
   ingress {
-    description    = "Zabbix server port (agents connect to 10051)"
-    protocol       = "TCP"
-    port           = 10051
+    description = "Zabbix server port (agents connect to 10051)"
+    protocol    = "TCP"
+    port        = 10051
     v4_cidr_blocks = [
-      yandex_vpc_subnet.subnet_a.v4_cidr_blocks[0],
-      yandex_vpc_subnet.subnet_b.v4_cidr_blocks[0]
+      yandex_vpc_subnet.this["subnet_a"].v4_cidr_blocks[0],
+      yandex_vpc_subnet.this["subnet_b"].v4_cidr_blocks[0]
     ]
   }
 
   ingress {
-    description    = "SSH from bastion"
-    protocol       = "TCP"
-    port           = 22
+    description       = "SSH from bastion"
+    protocol          = "TCP"
+    port              = 22
     security_group_id = yandex_vpc_security_group.bastion_sg.id
   }
 
@@ -157,31 +179,3 @@ resource "yandex_vpc_security_group" "zabbix_sg" {
   }
 }
 
-# Настройка балансировщика Application Load Balancer
-resource "yandex_vpc_security_group" "alb_sg" {
-  name       = "alb-sg-${var.flow}"
-  network_id = yandex_vpc_network.develop.id
-
-  ingress {
-    description    = "HTTP from internet"
-    protocol       = "TCP"
-    port           = 80
-    v4_cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Обязательное правило для health checks от инфраструктуры Yandex Cloud идут на порт 30080
-  # https://yandex.cloud/ru/docs/network-load-balancer/concepts/health-check
-  ingress {
-    description    = "Health checks from Yandex Cloud"
-    protocol       = "TCP"
-    port           = 30080
-    v4_cidr_blocks = ["198.18.235.0/24", "198.18.248.0/24"]
-  }
-
-  egress {
-    description    = "To web servers on port 80 (nginx server)"
-    protocol       = "TCP"
-    port           = 80
-    v4_cidr_blocks = ["10.10.1.0/24", "10.10.2.0/24"]
-  }
-}

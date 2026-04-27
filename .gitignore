@@ -1,10 +1,5 @@
 ### Local: (данные файлы создаются автоматически при развёртывании Terraform)
 inventory.ini
-filebeat_for_nginx.yml
-elasticsearch_docker.yml
-filebeat_for_nginx_docker.yml
-kibana_docker.yml
-zabbix_agent_playbook.yml
 
 ### SSH keys: (сгенерированные ключи)
 /ssh/*

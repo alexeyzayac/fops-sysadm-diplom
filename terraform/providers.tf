@@ -1,14 +1,16 @@
-# 00_providers.tf
-
 terraform {
   required_providers {
     yandex = {
       source  = "yandex-cloud/yandex"
-      version = "0.132.0"
+      version = "0.200.0"
     }
     tls = {
       source  = "hashicorp/tls"
-      version = "~> 4.0"
+      version = "~> 4.2"
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = "~> 2.8"
     }
   }
   required_version = "~> 1.6.0"

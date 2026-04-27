@@ -1,0 +1,32 @@
+---
+- name: Configure Zabbix agent
+  hosts: nginx, kibana, elasticsearch
+  become: true
+  gather_facts: true
+
+  vars:
+    zabbix_server_host: "{{ hostvars['zabbix-server']['ansible_host'] }}"
+
+  tasks:
+    - name: Set Zabbix agent configuration
+      ansible.builtin.lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: "^{{ item.param }}="
+        line: "{{ item.param }}={{ item.value }}"
+      loop:
+        - { param: 'Server', value: "{{ zabbix_server_host }}" }
+        - { param: 'ServerActive', value: "{{ zabbix_server_host }}" }
+        - { param: 'Hostname', value: "{{ ansible_hostname }}" }
+      notify: restart zabbix-agent
+
+    - name: Ensure zabbix-agent is running and enabled
+      ansible.builtin.systemd:
+        name: zabbix-agent
+        state: started
+        enabled: true
+
+  handlers:
+    - name: restart zabbix-agent
+      ansible.builtin.systemd:
+        name: zabbix-agent
+        state: restarted

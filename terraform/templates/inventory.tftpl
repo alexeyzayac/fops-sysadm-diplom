@@ -1,0 +1,29 @@
+[bastion]
+bastion-server ansible_host=${bastion_ip}
+
+[nginx]
+nginx-1-server ansible_host=${nginx1_ip}
+nginx-2-server ansible_host=${nginx2_ip}
+
+[zabbix]
+zabbix-server ansible_host=${zabbix_ip}
+
+[elasticsearch]
+elasticsearch-server ansible_host=${elasticsearch_ip}
+
+[kibana]
+kibana-server ansible_host=${kibana_ip}
+
+[internal:children]
+nginx
+zabbix
+elasticsearch
+kibana
+
+[all:vars]
+ansible_user=${ssh_user}
+ansible_ssh_private_key_file=${ssh_key_path}
+ansible_python_interpreter=/usr/bin/python3
+
+[internal:vars]
+ansible_ssh_common_args='-o ProxyCommand="ssh -i ${ssh_key_path} -p 22 -W %h:%p -q ${ssh_user}@${bastion_ip}"'
